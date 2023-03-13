@@ -17,7 +17,7 @@ class MainViewModel @Inject constructor(
 
     private val _mathsLiveData = MutableLiveData<List<Match>>()
 
-    val mathsLiveData : LiveData<List<Match>>
+    val matchsLiveData : LiveData<List<Match>>
     get() = _mathsLiveData
 
     init {

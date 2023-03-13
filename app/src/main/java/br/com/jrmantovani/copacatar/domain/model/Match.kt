@@ -4,6 +4,6 @@ data class Match(
     val date: String,
     val name: String,
     val stadium: Stadium,
-    val team1: String,
-    val team2: String
+    val team1: Team,
+    val team2: Team
 )
