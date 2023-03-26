@@ -9,9 +9,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,18 +19,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
+import br.com.jrmantovani.copacatar.R
 import br.com.jrmantovani.copacatar.domain.model.Match
 import br.com.jrmantovani.copacatar.domain.model.Team
 import br.com.jrmantovani.copacatar.extensions.getDate
 import br.com.jrmantovani.copacatar.ui.theme.Shapes
 import coil.compose.AsyncImage
 
+
+typealias NotificationOnClick = (match: Match) -> Unit
 @Composable
-fun MainScreen(matches: List<Match>) {
-//    val lista = remember {mutableStateOf(emptyList<Match>())
-//
-//    }
-//    lista.value = matches
+fun MainScreen(matches: List<Match>,onNotificationClick: NotificationOnClick) {
 
     Box(
         modifier = Modifier
@@ -41,14 +38,14 @@ fun MainScreen(matches: List<Match>) {
     ) {
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(matches) { match ->
-                MatchInfo(match)
+                MatchInfo(match, onNotificationClick)
             }
         }
     }
 }
 
 @Composable
-fun MatchInfo(match: Match) {
+fun MatchInfo(match: Match, onNotificationClick: NotificationOnClick) {
     Card(
         shape = Shapes.large,
         modifier = Modifier.fillMaxWidth()
@@ -62,7 +59,7 @@ fun MatchInfo(match: Match) {
             )
 
             Column(modifier = Modifier.padding(16.dp)) {
-//                Notification(match, onNotificationClick)
+                Notification(match, onNotificationClick)
                 Title(match)
                 Teams(match)
             }
@@ -71,22 +68,22 @@ fun MatchInfo(match: Match) {
 }
 
 
-//
-//@Composable
-//fun Notification(match: Match, ) {
-//    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-//        val drawable = R.drawable.ic_notifications_active
-//        else R.drawable.ic_notifications
-//
-//        Image(
-//            painter = painterResource(id = drawable),
-//            modifier = Modifier.clickable {
-//                onClick(match)
-//            },
-//            contentDescription = null
-//        )
-//    }
-//}
+
+@Composable
+fun Notification(match: Match,  onClick: NotificationOnClick ) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+        val drawable = if (match.notificationEnabled) R.drawable.ic_notifications_active
+        else R.drawable.ic_notifications
+
+        Image(
+            painter = painterResource(id = drawable),
+            modifier = Modifier.clickable {
+                onClick(match)
+            },
+            contentDescription = null
+        )
+    }
+}
 
 @Composable
 fun Title(match: Match) {
